@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Models\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -22,3 +22,22 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+
+$factory->define(App\Models\News::class, function (Faker $faker) {
+    return [
+        'title' => $faker->title
+    ];
+});
+$factory->define(App\Models\Content::class, function (Faker $faker) {
+    return [
+        'content' => $faker->realText(),
+        'contentable_id' => function() {
+            factory(App\Models\News::class)->create()->id;
+        },
+        'contentable_type' => function() {
+            return "news";
+        }
+    ];
+});
+
